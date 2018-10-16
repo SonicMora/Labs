@@ -49,7 +49,7 @@ public class Main extends Application {
 	public void empezarJuego() {
 //		try {
 			String aja=iniciar();
-			darGimnasio().aja(aja);
+			darGimnasio().ingresarJugador(aja);
 //		} catch (NombreRepetidoException e) {
 //			Alert excepcion=new Alert(AlertType.CONFIRMATION);
 //			excepcion.setHeaderText(null);

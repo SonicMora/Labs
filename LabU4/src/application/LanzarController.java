@@ -30,6 +30,7 @@ public class LanzarController {
 	@FXML private Button butGuardar;
 	@FXML private Button butPuntos;
 	@FXML private Button butNombres;
+	@FXML private Button butBuscar;
 	
 	@FXML private ImageView pokeActual;
 	
@@ -44,6 +45,10 @@ public class LanzarController {
 		accionarLabel();
 		
 		labPuntos.setFont(new Font("ARCADECLASSIC", 30));
+		
+		butBuscar.setOnMouseClicked(e->{
+			buscar();
+		});
 		
 		butGuardar.setOnMouseClicked(e->{
 			Main.guardar();
@@ -106,6 +111,24 @@ public class LanzarController {
 		}
 	}
 
+	public void buscar() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Dialog with Custom Actions");
+		alert.setHeaderText("¿Que desea buscar?");
+		alert.setContentText("Choose your option.");
+		
+		ButtonType buttonTypeUsuario = new ButtonType("Jugador");
+		ButtonType buttonTypePokemon = new ButtonType("Pokemon");
+		
+		alert.getButtonTypes().setAll(buttonTypeUsuario, buttonTypePokemon);
+		Optional<ButtonType> result = alert.showAndWait();
+		if(result.get()==buttonTypeUsuario) {
+			Main.buscar(1);
+		}else if(result.get()==buttonTypePokemon){
+			Main.buscar(-1);
+		}
+	}
+	
 	public String posiblesPokemones() {		
 		String wea="";
 		Alert alert = new Alert(AlertType.CONFIRMATION);

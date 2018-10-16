@@ -29,6 +29,7 @@
             <Button fx:id="butGuardar" mnemonicParsing="false" text="Guardar" />
             <Button fx:id="butPuntos" mnemonicParsing="false" text="Usuarios por puntos" />
             <Button fx:id="butNombres" mnemonicParsing="false" text="Usuarios por nombre" />
+            <Button fx:id="butBuscar" mnemonicParsing="false" text="Buscar" />
          </children>
       </HBox>
    </bottom>

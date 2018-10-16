@@ -67,7 +67,7 @@ public class Gimnasio {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void aja(String nickname) {
+	public void ingresarJugador(String nickname) {
 		try {
 			ObjectInputStream mostrar=new ObjectInputStream(new FileInputStream("src/partidas/Jugadores.dat"));
 			jugadores=(ArrayList<Jugador>) mostrar.readObject();

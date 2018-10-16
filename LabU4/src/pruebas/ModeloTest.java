@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import excepciones.PokemonNoEncontrado;
+import excepciones.UsuarioNoEncontrado;
 import modelo.Gimnasio;
 import modelo.Jugador;
 
@@ -23,7 +25,7 @@ class ModeloTest {
 	}
 	
 	@Test
-	void compareToTest() {
+	void testCompareTo() {
 		escenario2();
 		player.setPuntos(20);
 		Jugador j2=new Jugador("Anderson");
@@ -32,7 +34,7 @@ class ModeloTest {
 	}
 	
 	@Test
-	void ordenNombresTest() {
+	void testOrdenNombres() {
 		escenario1();
 		ArrayList<Jugador> nea=new ArrayList<Jugador>();
 		Jugador j3=new Jugador("Zarama");
@@ -49,7 +51,7 @@ class ModeloTest {
 	}
 	
 	@Test
-	void ordenPuntos() {
+	void tesOrdenPuntos() {
 		escenario1();
 		ArrayList<Jugador> nea=new ArrayList<Jugador>();
 		Jugador j1=new Jugador("Zarama");
@@ -68,4 +70,64 @@ class ModeloTest {
 		assertEquals(nea1, gym.ordenPuntos(nea));
 	}
 
+	@Test
+	void testBusquedaBinariaJ() {
+		escenario1();
+		ArrayList<Jugador> nea=new ArrayList<Jugador>();
+		Jugador j1=new Jugador("Zarama");
+		j1.setPuntos(10);
+		Jugador j2=new Jugador("Jurado");
+		j2.setPuntos(30);
+		Jugador j3=new Jugador("Arana");
+		j3.setPuntos(20);
+		nea.add(j1);
+		nea.add(j2);
+		nea.add(j3);
+		try {
+			assertEquals(nea.get(0).toString(), gym.busquedaBinariaJ("Zarama", nea));
+		} catch (UsuarioNoEncontrado e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	@Test
+	void testBusquedaBinariaJExcepcion() {
+		escenario1();
+		ArrayList<Jugador> nea=new ArrayList<Jugador>();
+		Jugador j1=new Jugador("Zarama");
+		j1.setPuntos(10);
+		Jugador j2=new Jugador("Jurado");
+		j2.setPuntos(30);
+		Jugador j3=new Jugador("Arana");
+		j3.setPuntos(20);
+		nea.add(j1);
+		nea.add(j2);
+		nea.add(j3);
+		try {
+			assertEquals(UsuarioNoEncontrado.class, gym.busquedaBinariaJ("Carlos", nea));
+		} catch (UsuarioNoEncontrado e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	@Test
+	void testBusquedaBinariaP() {
+		escenario1();
+		try {
+			assertEquals("Joelton", gym.busquedaBinariaP("Joelton"));
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	@Test
+	void testBusquedaBinariaPExcepcion() {
+		escenario1();
+		try {
+			assertEquals(PokemonNoEncontrado.class, gym.busquedaBinariaP("Lucario"));
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
 }
