@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LanzarController">
+   <top>
+      <ImageView fx:id="banner" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+   </top>
+   <center>
+      <Pane BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="cancha" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="flag" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="pokeActual" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="labPuntos" text="0" />
+         </children>
+      </Pane>
+   </center>
+   <right>
+   </right>
+   <bottom>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="butGuardar" mnemonicParsing="false" text="Guardar" />
+            <Button fx:id="butPuntos" mnemonicParsing="false" text="Usuarios por puntos" />
+            <Button fx:id="butNombres" mnemonicParsing="false" text="Usuarios por nombre" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
