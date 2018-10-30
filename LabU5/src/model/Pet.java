@@ -58,6 +58,9 @@ public class Pet {
 		this.type = type;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return name+" - "+gender+" - "+type+" - "+dOB;
+	}
 	
 }
