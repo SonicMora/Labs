@@ -51,7 +51,7 @@ class OwnerTest {
 	}
 	
 	@Test
-	void testFind() {
+	void testFindByName() {
 		stage2();
 		try {
 			assertEquals("Ronalda Hembra Gato 10/06/2012", owner.findByName(owner.getFirst(), "ronalda"));
@@ -61,7 +61,7 @@ class OwnerTest {
 	}
 
 	@Test
-	void testFindException(){
+	void testFindByNameException(){
 		stage2();
 		boolean thrown=false;
 		try {
@@ -72,6 +72,31 @@ class OwnerTest {
 
 		}
 		assertTrue(thrown);
+	}
+	
+	
+	@Test
+	void testFindByDOB() {
+		stage2();
+		Pet x=new Pet("Ronalda", "10/06/2012", "Hembra", "Gato");
+		try {
+			assertEquals(x.toString(), owner.findByDOB(owner.getFirst(), "10/06/2012"));
+		} catch (EmptyList | NoSuchPet e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Test
+	void testFindByDOBException() {
+		stage2();
+		boolean exception=false;
+		try {
+			owner.findByDOB(owner.getFirst(), "11/08/1999");
+		} catch (EmptyList | NoSuchPet e) {
+			exception=true;
+		}
+		assertTrue(exception);
 	}
 	
 }

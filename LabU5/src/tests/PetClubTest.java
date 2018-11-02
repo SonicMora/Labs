@@ -32,7 +32,6 @@ class PetClubTest {
 			pC.findById(1);
 		} catch (NoSuchOwner e) {
 			exception=true;
-			System.out.println(pC.size());
 		}catch(EmptyList e) {
 			
 		}
