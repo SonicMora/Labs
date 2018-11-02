@@ -26,7 +26,7 @@ public class PetClubController {
 	@FXML private Button butModifyOwner;
 	
 	@FXML private Button butAddPet;
-	@FXML private Button butDletePet;
+	@FXML private Button butDeletePet;
 	@FXML private Button butFindPet;
 	@FXML private Button butModifyPet;
 	
@@ -60,16 +60,18 @@ public class PetClubController {
 		buttonActions();
 	}
 	
+	public void initializeTypes() {
+		chooseType.setItems(FXCollections.observableArrayList("Perro", "Gato"));
+	}
+	
+	public void initializeGenders() {
+		chooseGender.setItems(FXCollections.observableArrayList("Macho", "Hembra"));
+	}
+	
 	public void buttonActions() {
 		Alert popUp=new Alert(AlertType.INFORMATION);
 		popUp.setTitle("No tan rapido velocista");
 		popUp.setHeaderText(null);
-		butOwners.setOnAction(e->{
-			listOwners(popUp);
-		});
-		butPets.setOnAction(e->{
-			listPets(popUp);
-		});
 		butAddOwner.setOnAction(e->{
 			try {
 				Main.getPetClub().add(Integer.parseInt(txtId.getText()), txtNameOwner.getText(), txtLastName.getText(), txtDOBOwner.getText());
@@ -82,8 +84,8 @@ public class PetClubController {
 		});
 		butAddPet.setOnAction(e->{
 			try {
-				Main.getPetClub().find(Main.getPetClub().getFirstOwners(), txtNameOwner.getText(), txtLastName.getText(), Integer.parseInt(txtId.getText())).add(
-						txtNamePet.getText(), txtDOBPet.getText(), chooseGender.getSelectionModel().getSelectedItem(), chooseType.getSelectionModel().getSelectedItem());
+				Main.getPetClub().findByName(txtNameOwner.getText()+" "+txtLastName.getText()).add(
+					txtNamePet.getText(), txtDOBPet.getText(), chooseGender.getSelectionModel().getSelectedItem(), chooseType.getSelectionModel().getSelectedItem());
 			} catch (Exception e1) {
 				popUp.setContentText(e1.getMessage());
 				popUp.getButtonTypes().clear();
@@ -99,17 +101,89 @@ public class PetClubController {
 			popUp.getButtonTypes().addAll(buttonTypeCedula, buttonTypeNombre);
 			Optional<ButtonType> result = popUp.showAndWait();
 			if (result.get() == buttonTypeCedula){
-				find(1);
+				findOwner(1, popUp);
 			} else if (result.get() == buttonTypeNombre) {
-				find(-1);
+				findOwner(-1, popUp);
 			}
 		});
 		butDeleteOwner.setOnAction(e->{
 			deleteOwner(popUp);
 		});
+		butOwners.setOnAction(e->{
+			listOwners(popUp);
+		});
+		butPets.setOnAction(e->{
+			listPets(popUp);
+		});
+		butFindPet.setOnAction(e->{
+			popUp.setContentText("Quiere buscar una mascota por su nombre o su fecha de nacimiento?");
+			ButtonType buttonTypeDOB = new ButtonType("Fecha de nacimiento");
+			ButtonType buttonTypeNombre = new ButtonType("Nombre");
+			popUp.getButtonTypes().clear();
+			popUp.getButtonTypes().addAll(buttonTypeDOB, buttonTypeNombre);
+			Optional<ButtonType> result = popUp.showAndWait();
+			if (result.get() == buttonTypeDOB){
+				findPet(1, popUp);
+			} else if (result.get() == buttonTypeNombre) {
+				findPet(-1, popUp);
+			}
+		});
+		butDeletePet.setOnAction(e->{
+			deletePet();
+		});
+		butRePets.setOnAction(e->{
+			listRepeatedPets(popUp);
+		});
+		
+	}
+	
+	public void findOwner(int x, Alert popUp2) {
+		String found="";
+		TextInputDialog popUp=new TextInputDialog("");
+		popUp.setTitle("No tan rapido velocista");
+		popUp.setHeaderText(null);
+		if(x>0) {
+			popUp.setContentText("Ingrese la cedula del usuario que desea buscar");
+			Optional<String> result = popUp.showAndWait();
+			if(result.isPresent()) {
+				try {
+					found=Main.getPetClub().findById(Integer.parseInt(result.get())).toString();
+					String[] founded=found.split(" ");
+					txtNameOwner.setText(founded[0]);
+					txtLastName.setText(founded[1]);
+					txtId.setText(founded[2]);
+					txtDOBOwner.setText(founded[3]);
+				} catch (Exception e) {
+					popUp2.setContentText(e.getMessage());
+					popUp2.getButtonTypes().clear();
+					popUp2.getButtonTypes().add(new ButtonType("Okay"));
+					popUp2.showAndWait();
+				}
+			}
+		}else {
+			popUp.setContentText("Ingrese el nombre y el apellido del usuario que desea buscar");
+			Optional<String> result = popUp.showAndWait();
+			if(result.isPresent()) {
+				try {
+					found=Main.getPetClub().findByName(result.get()).toString();
+					String[] founded=found.split(" ");
+					txtNameOwner.setText(founded[0]);
+					txtLastName.setText(founded[1]);
+					txtId.setText(founded[2]);
+					txtDOBOwner.setText(founded[3]);
+				} catch (Exception e) {
+					popUp2.setContentText(e.getMessage());
+					popUp2.getButtonTypes().clear();
+					popUp2.getButtonTypes().add(new ButtonType("Okay"));
+					popUp2.showAndWait();
+				}
+			}
+		}
 	}
 	
 	public void deleteOwner(Alert popUp) {
+		popUp.getButtonTypes().clear();
+		popUp.getButtonTypes().add(new ButtonType("Okay"));
 		TextInputDialog popUp2=new TextInputDialog("");
 		popUp2.setTitle("No tan rapido velocista");
 		popUp2.setContentText("Ingrese la cedula del usuario que desea buscar");
@@ -119,65 +193,12 @@ public class PetClubController {
 			try {
 				popUp.setContentText("Se eliminó el usuario deseado");
 				Main.getPetClub().delete(Integer.parseInt(result.get()));
-				popUp.showAndWait();
 			}catch(Exception e) {
 				popUp.setContentText(e.getMessage());
+			}finally {
 				popUp.showAndWait();
 			}
 		}
-	}
-	
-	public void find(int x) {
-		String found="";
-		TextInputDialog popUp=new TextInputDialog("");
-		popUp.setTitle("No tan rapido velocista");
-		popUp.setHeaderText(null);
-		Optional<String> result = popUp.showAndWait();
-		if(x>0) {
-			popUp.setContentText("Ingrese la cedula del usuario que desea buscar");
-			if(result.isPresent()) {
-				try {
-					found=Main.getPetClub().findById(Integer.parseInt(result.get()));
-					String[] founded=found.split(" ");
-					txtNameOwner.setText(founded[0]);
-					txtLastName.setText(founded[1]);
-					txtId.setText(founded[2]);
-					txtDOBOwner.setText(founded[3]);
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
-			}
-		}else {
-			popUp.setContentText("Ingrese el nombre y el apellido del usuario que desea buscar");
-			if(result.isPresent()) {
-				try {
-					found=Main.getPetClub().findByName(result.get());
-					String[] founded=found.split(" ");
-					txtNameOwner.setText(founded[0]);
-					txtLastName.setText(founded[1]);
-					txtId.setText(founded[2]);
-					txtDOBOwner.setText(founded[3]);
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
-			}
-		}
-	}
-	
-	public void initializeTypes() {
-		List<String> list=new ArrayList<String>();
-		list.add("Perro");
-		list.add("Gato");
-		ObservableList<String> types=FXCollections.observableList(list);
-		chooseType.setItems(types);
-	}
-	
-	public void initializeGenders() {
-		List<String> list=new ArrayList<String>();
-		list.add("Macho");
-		list.add("Hembra");
-		ObservableList<String> genders=FXCollections.observableList(list);
-		chooseGender.setItems(genders);
 	}
 	
 	public void listOwners(Alert popUp) {
@@ -200,7 +221,7 @@ public class PetClubController {
 			list.add(owners[i]);
 		}
 		ObservableList<String> ownersList=FXCollections.observableList(list);
-		listPets_Owners.setItems(ownersList);
+		listPets_Owners.setItems(ownersList);	
 	}
 	
 	public void listPets(Alert popUp) {
@@ -217,6 +238,88 @@ public class PetClubController {
 			popUp.setContentText(e.getMessage());
 			popUp.showAndWait();
 		}
+		String[] pets=result.split("#");
+		List<String> list=new ArrayList<String>();
+		for(int i=0;i<pets.length;i++) {
+			list.add(pets[i]);
+		}
+		ObservableList<String> petsList=FXCollections.observableList(list);
+		listPets_Owners.setItems(petsList);
+	}
+	
+	public void findPet(int x, Alert popUp2) {
+		String found="";
+		TextInputDialog popUp=new TextInputDialog("");
+		popUp.setTitle("No tan rapido velocista");
+		popUp.setHeaderText(null);
+		if(x>0) {
+			popUp.setContentText("Ingrese la fecha de nacimiento de la mascota que desea buscar");
+			Optional<String> result = popUp.showAndWait();
+			if(result.isPresent()) {
+				try {
+					found=Main.getPetClub().findById(Integer.parseInt(txtId.getText())).findByDOB(Main.getPetClub().findById(Integer.parseInt(txtId.getText())).getFirst(), result.get());
+					String[] founded=found.split(" ");
+					txtNamePet.setText(founded[0]);
+					chooseGender.setValue(founded[1]);
+					chooseType.setValue(founded[2]);
+					txtDOBPet.setText(founded[3]);
+				} catch (Exception e) {
+					popUp2.setContentText(e.getMessage());
+					popUp2.getButtonTypes().clear();
+					popUp2.getButtonTypes().add(new ButtonType("Okay"));
+					popUp2.showAndWait();
+				}
+			}
+		}else {
+			popUp.setContentText("Ingrese el nombre de la mascota que desea buscar");
+			Optional<String> result = popUp.showAndWait();
+			if(result.isPresent()) {
+				try {
+					found=Main.getPetClub().findById(Integer.parseInt(txtId.getText())).findByName(Main.getPetClub().findById(Integer.parseInt(txtId.getText())).getFirst(), result.get());
+					String[] founded=found.split(" ");
+					txtNamePet.setText(founded[0]);
+					chooseType.setValue(founded[1]);
+					chooseGender.setValue(founded[2]);
+					txtDOBPet.setText(founded[3]);
+				} catch (Exception e) {
+					popUp2.setContentText(e.getMessage());
+					popUp2.getButtonTypes().clear();
+					popUp2.getButtonTypes().add(new ButtonType("Okay"));
+					popUp2.showAndWait();
+				}
+			}
+		}
+	}
+	
+	public void deletePet() {
+		try {
+			Main.getPetClub().findById(Integer.parseInt(txtId.getText())).delete(txtNamePet.getText());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			txtNamePet.setText(null);
+			txtDOBPet.setText(null);
+			chooseGender.getSelectionModel().clearSelection();
+			chooseType.getSelectionModel().clearSelection();
+		}
+	}
+	
+	public void listRepeatedPets(Alert popUp) {
+		String passed="";
+		String result="";
+		if(txtFilter.getText().equals("")) {
+			passed=null;
+		}else {
+			passed=txtFilter.getText();
+		}
+		try {
+			result=Main.getPetClub().listRepeatedPets(passed);
+		} catch (EmptyList e) {
+			popUp.setContentText(e.getMessage());
+			popUp.getButtonTypes().clear();
+			popUp.getButtonTypes().add(new ButtonType("Okay"));
+			popUp.showAndWait();
+		}
 		String[] owners=result.split("#");
 		List<String> list=new ArrayList<String>();
 		for(int i=0;i<owners.length;i++) {
@@ -225,5 +328,4 @@ public class PetClubController {
 		ObservableList<String> ownersList=FXCollections.observableList(list);
 		listPets_Owners.setItems(ownersList);
 	}
-	
 }

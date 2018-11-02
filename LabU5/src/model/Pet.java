@@ -9,12 +9,15 @@ public class Pet {
 	private String gender;
 	private String type;
 	
+	private boolean listed;
+	
 	public Pet(String name, String dOB, String gender, String type) {
 		this.name = name;
 		this.dOB = dOB;
 		this.gender = gender;
 		this.type = type;
 		
+		setListed(false);
 		next=null;
 	}
 	
@@ -57,10 +60,18 @@ public class Pet {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public boolean isListed() {
+		return listed;
+	}
+
+	public void setListed(boolean listed) {
+		this.listed = listed;
+	}
 	
 	@Override
 	public String toString() {
-		return name+" - "+gender+" - "+type+" - "+dOB;
+		return name+" "+gender+" "+type+" "+dOB;
 	}
 	
 }

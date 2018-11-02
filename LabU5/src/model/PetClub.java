@@ -8,25 +8,25 @@ public class PetClub {
 
 	private Owner first;
 	
+	private int size;
+	
 	public PetClub() {
+		
+		size=0;
+		
 		first=null;
+		
+		try {
+			add(1143876043, "Victor", "Mora", "11/11/1998");
+			add(94501183, "Raul", "Mora", "23/12/1976");
+			add(1192803061, "Valentina", "Restrepo", "09/09/2000");
+		} catch (ExistentOwner e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Owner getFirstOwners() {
 		return first;
-	}
-	
-	public void deleteOwner(Owner thisOne, int iD) throws NoSuchOwner, EmptyList{
-		if(first==null) {
-			throw new EmptyList();
-		}else if(thisOne.getNext()!=null && thisOne.getId()==iD) {
-			thisOne.getPrevious().setNext(thisOne.getNext());
-			thisOne.getNext().setPrevious(thisOne.getPrevious());
-		}else if(thisOne.getNext()==null){
-			throw new NoSuchOwner(Integer.toString(iD));
-		}else {
-			deleteOwner(thisOne.getNext(), iD);
-		}
 	}
 	
 	public void add(int id, String name, String lastName, String dOB) throws ExistentOwner{
@@ -46,37 +46,34 @@ public class PetClub {
 		}
 		if(actual!=null && id<actual.getId()) {	
 			incoming.setNext(first);
+			first.setPrevious(incoming);
 			first = incoming;
 		}else {
-			while(actual.getId()<incoming.getId() && actual.getNext()!=null){
-				actual = actual.getNext();
-			}if(actual.getNext()==null) {
-				actual.setNext(incoming);
-				incoming.setPrevious(actual);
-			}else {
-				incoming.setNext(actual);
-				actual.getPrevious().setNext(incoming);
+			if(actual!=null) {
+				while(actual.getId()<incoming.getId() && actual.getNext()!=null){
+					actual = actual.getNext();
+				}if(actual.getNext()==null) {
+					actual.setNext(incoming);
+					incoming.setPrevious(actual);
+				}else {
+					incoming.setNext(actual);
+					incoming.setPrevious(actual.getPrevious());
+					actual.getPrevious().setNext(incoming);
+					actual.setPrevious(incoming);
+				}
 			}
 		}
+		size++;
 	}
 	
-	public Owner find(Owner thisOne, String name, String lastName, int id) throws NoSuchOwner {
-		if(thisOne.getName().equalsIgnoreCase(name+" "+lastName) && thisOne.getId()==id) {
-			return thisOne;
-		}else if(thisOne.getNext()!=null) {
-			find(thisOne.getNext(), name, lastName, id);
-		}
-		throw new NoSuchOwner(name);
-	}
-	
-	public String findById(int id) throws NoSuchOwner, EmptyList {
+	public Owner findById(int id) throws NoSuchOwner, EmptyList {
 		if(first==null) {
 			throw new EmptyList();
 		}else {
 			Owner temp=first;
 			while(temp!=null) {
 				if(temp.getId()==id) {
-					return temp.toString();
+					return temp;
 				}
 				temp=temp.getNext();
 			}
@@ -84,14 +81,14 @@ public class PetClub {
 		throw new NoSuchOwner(Integer.toString(id));
 	}
 	
-	public String findByName(String name) throws NoSuchOwner, EmptyList {
+	public Owner findByName(String name) throws NoSuchOwner, EmptyList {
 		if(first==null) {
 			throw new EmptyList();
 		}else {
 			Owner temp=first;
 			while(temp!=null) {
-				if(temp.getName().equals(name)) {
-					return temp.toString();
+				if(temp.getName().equalsIgnoreCase(name)) {
+					return temp;
 				}
 				temp=temp.getNext();
 			}
@@ -101,21 +98,37 @@ public class PetClub {
 	
 	public void delete(int id) throws NoSuchOwner, EmptyList {
 		Owner thisOne=first;
-		if(thisOne==null) {
+		boolean deleted=false;
+		if(thisOne==null){
 			throw new EmptyList();
 		}else {
-			while(thisOne!=null) {
-				if(thisOne.getId()==id) {
-					thisOne.getPrevious().setNext(thisOne.getNext());
-					thisOne.getNext().setPrevious(thisOne.getPrevious());
-				}else {
-					thisOne=thisOne.getNext();
+			if(first.getId()==id) {
+				first=first.getNext();
+			}else {
+				while(thisOne!=null && !deleted) {
+					if(thisOne.getId()==id) {
+						if(thisOne.getNext()!=null) {
+							thisOne.getPrevious().setNext(thisOne.getNext());
+							thisOne.getNext().setPrevious(thisOne.getPrevious());
+							thisOne.setNext(null);
+							thisOne.setPrevious(null);
+						}else {
+							thisOne.getPrevious().setNext(thisOne.getNext());
+						}
+						thisOne.setNext(null);
+						thisOne.setPrevious(null);
+						deleted=true;
+					}else{
+						thisOne=thisOne.getNext();
+					}
+				}if(thisOne==null) {
+					throw new NoSuchOwner(Integer.toString(id));
 				}
 			}
 		}
-		throw new NoSuchOwner(Integer.toString(id));
-	}
-
+		size--;
+	}	
+	
 	public String owners(String filter) throws EmptyList{
 		String listed="";
 		if(filter!=null) {
@@ -132,11 +145,10 @@ public class PetClub {
 			throw new EmptyList();
 		}else {
 			while(temp!=null) {
-				if(temp.getName().equalsIgnoreCase(filter)) {
+				if(temp.getdOB().equalsIgnoreCase(filter)) {
 					listed+=temp.toString()+"#";
-				}else {
-					temp=temp.getNext();
 				}
+				temp=temp.getNext();
 			}
 			return listed;
 		}
@@ -195,5 +207,64 @@ public class PetClub {
 			}
 		}
 		return listed;
+	}
+	
+	public String listRepeatedPets(String filter) throws EmptyList {
+		Owner thisOne=first;
+		String listed="";
+		if(thisOne==null) {
+			throw new EmptyList();
+		}else {
+			while(thisOne!=null) {
+				listed+=thisOne.listRepeatedPets(filter)+"#";
+				thisOne=thisOne.getNext();
+			}
+		}
+		return listed;
+	}
+	
+	public String listRepeatedOwners(String filter) throws EmptyList {
+		if(filter==null) {
+			return listRepeatedOwnersNoFilter();
+		}else {
+			return listRepeatedOwnersByFilter(filter);
+		}
+	}
+	
+	public String listRepeatedOwnersNoFilter() throws EmptyList{
+		String listed="";
+		Owner temp=first;
+		Owner thisOne=temp;
+		if(first==null) {
+			throw new EmptyList();
+		}else {
+			while(temp!=null) {
+				thisOne=temp;
+				while(thisOne!=null) {
+					if(thisOne.getName().equals(temp.getName()) && thisOne.isListed()==false) {
+						listed+=thisOne.toString();
+						thisOne.setListed(true);
+					}else {
+						thisOne=thisOne.getNext();
+					}
+				}
+				temp=temp.getNext();
+			}
+		}
+		return listed;
+	}
+	
+	public void clear() {
+		first.setNext(null);
+		size=0;
+	}
+	
+	public String listRepeatedOwnersByFilter(String filter){
+		String listed="";
+		return listed;
+	}
+	
+	public int size() {
+		return size;
 	}
 }
