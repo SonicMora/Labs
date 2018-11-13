@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="311.0" prefWidth="672.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.EventoCotroller">
+  <tabs>
+    <Tab text="Tab 1">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <BorderPane layoutX="200.0" layoutY="86.0" prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <center>
+                        <SplitPane dividerPositions="0.5238805970149254" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="329.0">
+                                 <children>
+                                    <VBox layoutX="98.0" layoutY="85.0" prefHeight="369.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.4943820224719101" orientation="VERTICAL" prefHeight="91.0" prefWidth="294.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <HBox layoutX="47.0" layoutY="-21.0" prefHeight="58.0" prefWidth="294.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <children>
+                                                            <TextField fx:id="txtRuta" />
+                                                            <Button fx:id="butExplorar" mnemonicParsing="false" text="Explorar" />
+                                                            <Button fx:id="butCargar" mnemonicParsing="false" text="Cargar" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <Label fx:id="labFalloCarga" layoutX="8.0" layoutY="6.0" text="Los programadores han sido cargados exitosamente" />
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                          <SplitPane dividerPositions="0.47297297297297297" orientation="VERTICAL" prefHeight="96.0" prefWidth="294.0">
+                                             <items>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <HBox layoutX="-33.0" layoutY="8.0" prefHeight="58.0" prefWidth="294.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <children>
+                                                            <Label text="Id:" />
+                                                            <TextField fx:id="txtProgramador" />
+                                                            <Button fx:id="butBuscarProgramador" mnemonicParsing="false" text="Buscar" />
+                                                            <Label text="Tiempo: " />
+                                                            <Label fx:id="labTiempoProgrmador" text="xx ms" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="54.0" prefWidth="292.0">
+                                                   <children>
+                                                      <Label fx:id="labFalloProgramador" layoutY="10.0" text="No se encontró el programador con el id: " />
+                                                   </children>
+                                                </AnchorPane>
+                                             </items>
+                                          </SplitPane>
+                                          <SplitPane dividerPositions="0.425531914893617" orientation="VERTICAL" prefHeight="96.0" prefWidth="294.0">
+                                             <items>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <HBox layoutX="61.0" layoutY="-2.0" prefHeight="58.0" prefWidth="294.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <children>
+                                                            <Label alignment="CENTER" text="Id:" />
+                                                            <TextField fx:id="txtParticipante" />
+                                                            <Button fx:id="butBuscarParticipante" mnemonicParsing="false" text="Buscar" />
+                                                            <Label text="Tiempo: " />
+                                                            <Label fx:id="labTiempoParticipate" text="xx ms" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <Label fx:id="labFalloParticipante" layoutY="14.0" text="No se encontró el participante con el id: " />
+                                                   </children>
+                                                </AnchorPane>
+                                             </items>
+                                          </SplitPane>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <ImageView fx:id="imgAvatar" fitHeight="140.0" fitWidth="140.0" layoutX="84.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </AnchorPane>
+                          </items>
+                        </SplitPane>
+                     </center>
+                  </BorderPane>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+      <Tab text="Tab 2">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <SplitPane dividerPositions="0.8107142857142857" layoutX="256.0" layoutY="41.0" orientation="VERTICAL" prefHeight="282.0" prefWidth="672.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <Canvas fx:id="pintarEstructuras" height="227.0" layoutX="-2.0" layoutY="-1.0" width="672.0" />
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <Button fx:id="butProgramadores" layoutX="161.0" layoutY="13.0" mnemonicParsing="false" text="Programadores" />
+                              <Button fx:id="butParticipantes" layoutX="418.0" layoutY="13.0" mnemonicParsing="false" text="Participantes" />
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+  </tabs>
+</TabPane>
