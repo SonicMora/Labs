@@ -6,8 +6,11 @@ public class ABB {
 
 	private Programador raiz;
 	
+	private int peso;
+	
 	public ABB() {
 		raiz=null;
+		peso=0;
 	}
 	
 	public void add(Programador actual, Programador nuevo) {
@@ -15,12 +18,14 @@ public class ABB {
 			nuevo.setPosX(500);
 			nuevo.setPosY(25);
 			raiz=nuevo;
+			peso+=1;
 		}else {
 			if(nuevo.getId()<=actual.getId()) {
 				if(actual.getIzquierdo()==null) {
 					nuevo.setPosX(actual.getPosX()-actual.getDistancia());
 					nuevo.setPosY(actual.getPosY()+50);
 					actual.setIzquierdo(nuevo);
+					peso+=1;
 				}else {
 					add(actual.getIzquierdo(), nuevo);
 				}
@@ -29,6 +34,7 @@ public class ABB {
 					nuevo.setPosX(actual.getPosX()+actual.getDistancia());
 					nuevo.setPosY(actual.getPosY()+50);
 					actual.setDerecho(nuevo);
+					peso+=1;
 				}else {
 					add(actual.getDerecho(), nuevo);
 				}
@@ -54,21 +60,6 @@ public class ABB {
 				}
 			}
 		}
-	}
-	
-	public Programador buscarAleatorio(Programador a, int b) {
-		if(b==0 && a.isParticipante()==false) {
-			a.setParticipante(true);
-			return a;
-		}else {
-			if(a.getIzquierdo()!=null) {
-				return buscarAleatorio(a.getIzquierdo(), b--);
-			}else if(a.getDerecho()!=null){
-				return buscarAleatorio(a.getDerecho(), b--);
-			}
-		}
-		a.setParticipante(true);
-		return a;
 	}
 	
 	public Programador getRaiz() {
@@ -106,6 +97,15 @@ public class ABB {
 			inorden(getDerArbol(a));
 		}           
 	}
+
+	public int getPeso() {
+		return peso;
+	}
+
+	public void setPeso(int peso) {
+		this.peso = peso;
+	}
 	
+		
 	
 }

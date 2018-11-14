@@ -24,6 +24,11 @@ public class EventoCotroller {
 	@FXML private Button butProgramadores;
 	@FXML private Button butParticipantes;
 	
+	@FXML private TextField txtNombre;
+	@FXML private TextField txtApellido;
+	@FXML private TextField txtCorreo;
+	@FXML private TextField txtGenero;
+	
 	@FXML private TextField txtRuta;
 	@FXML private TextField txtProgramador;
 	@FXML private TextField txtParticipante;
@@ -61,6 +66,10 @@ public class EventoCotroller {
 		long principio=System.currentTimeMillis();
 		try {
 			ponerAvatar(Main.getEvento().getArbol().buscar(Main.getEvento().getArbol().getRaiz(), Long.parseLong(txtProgramador.getText())).getAvatar());
+			txtNombre.setText(Main.getEvento().getArbol().buscar(Main.getEvento().getArbol().getRaiz(), Long.parseLong(txtProgramador.getText())).getNombre());
+			txtApellido.setText(Main.getEvento().getArbol().buscar(Main.getEvento().getArbol().getRaiz(), Long.parseLong(txtProgramador.getText())).getApellido());
+			txtCorreo.setText(Main.getEvento().getArbol().buscar(Main.getEvento().getArbol().getRaiz(), Long.parseLong(txtProgramador.getText())).getCorreo());
+			txtGenero.setText(Main.getEvento().getArbol().buscar(Main.getEvento().getArbol().getRaiz(), Long.parseLong(txtProgramador.getText())).getGenero());
 		} catch (Exception e) {
 			labFalloProgramador.setText(e.getMessage());
 		}
@@ -96,7 +105,7 @@ public class EventoCotroller {
 		ArrayList<Programador> rutas=Main.getEvento().programadores();
 		for(Programador epa : rutas) {
 			ImageView imag=new ImageView(new Image(epa.getAvatar()));
-			g.drawImage(imag.getImage(), epa.getPosX(), epa.getPosY(), 60, 40);
+			g.drawImage(imag.getImage(), epa.getPosX(), epa.getPosY(), 30, 30);
 			pintarLineas(g);
 		}
 	}

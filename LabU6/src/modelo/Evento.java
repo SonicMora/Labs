@@ -10,11 +10,11 @@ import java.util.ArrayList;
 public class Evento {
 
 	private ABB arbol;
-	private Participantes lista;
+	private ListaParticipante lista;
 	
 	public Evento() {
 		arbol=new ABB();
-		lista=new Participantes();
+		lista=new ListaParticipante();
 	}
 	
 	public void cargarDatos(File ruta) throws NumberFormatException, IOException{
@@ -25,29 +25,45 @@ public class Evento {
 			arbol.add(arbol.getRaiz(), new Programador(Long.parseLong(wepa[0]), wepa[1], wepa[2], wepa[3], wepa[4], wepa[5]));
 		}
 		lector.close();
-		arbol.inorden(arbol.getRaiz());
-//		cargarLista(0);
+		agregarALista(0);
 	}
 	
-	public void crearLista() {
+//	public void crearLista(int contador) {
+//		SecureRandom ran =new SecureRandom();
+//		if(contador<(arbol.getPeso()/2)) {
+//			try {
+//				Programador a=arbol.buscar(arbol.getRaiz(), (ran.nextInt(1000)+1));
+//				lista.add(lista.getCabeza(), a);
+//			} catch (ProgramadorNoExisteException e) {
+//				crearLista(contador);
+//			}
+//			crearLista(contador++);
+//		}
+//		System.out.println(lista.getSize());
+//	}
+	
+	public void crearLista(int x) {
 		SecureRandom ran=new SecureRandom();
-		int t=1+ran.nextInt(1000);
-		if(arbol.buscarAleatorio(arbol.getRaiz(), t)!=null) {
-			lista.add(lista.getCabeza(), arbol.buscarAleatorio(arbol.getRaiz(), t));
-		}else{
-			crearLista();
+		try {
+			if(arbol.buscar(arbol.getRaiz(), (1+ran.nextInt(1000))).isParticipante()==false) {
+				lista.add(lista.getCabeza(), arbol.buscar(arbol.getRaiz(), (1+ran.nextInt(1000))));
+			}else {
+				agregarALista(x);
+			}
+		}catch(Exception e) {
+			agregarALista(x);
 		}
+		agregarALista(x++);
 	}
 	
-	public void cargarLista(int cont) {
-		while(cont<500) {
-			crearLista();
-			cont++;
+	public void agregarALista(int c) {
+		if(c<(arbol.getPeso()/2)) {
+			crearLista(c);
 		}
 	}
 	
 	public void rutasProgramadores(Programador actual, ArrayList<Programador> nombres){
-		if(actual != null ) {
+		if(actual!=null ) {
 			nombres.add(actual);
 			rutasProgramadores(actual.getIzquierdo(), nombres);
 			rutasProgramadores(actual.getDerecho(), nombres);
@@ -59,7 +75,7 @@ public class Evento {
 		rutasProgramadores(getArbol().getRaiz(), nombres);
 		return nombres;
 	}
-	
+
 	public ABB getArbol() {
 		return arbol;
 	}
@@ -68,11 +84,11 @@ public class Evento {
 		this.arbol = arbol;
 	}
 
-	public Participantes getLista() {
+	public ListaParticipante getLista() {
 		return lista;
 	}
 
-	public void setLista(Participantes lista) {
+	public void setLista(ListaParticipante lista) {
 		this.lista = lista;
 	}
 	

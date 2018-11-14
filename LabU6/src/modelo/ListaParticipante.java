@@ -1,11 +1,13 @@
 package modelo;
 
-public class Participantes {
+public class ListaParticipante {
 
 	private Programador cabeza;
+	private int size;
 	
-	public Participantes() {
+	public ListaParticipante() {
 		cabeza=null;
+		size=0;
 	}
 	
 	public Programador getCabeza() {
@@ -19,13 +21,14 @@ public class Participantes {
 	public void add(Programador actual, Programador nuevo) {
 		if(cabeza==null) {
 			cabeza=nuevo;
+			size++;
 		}else if(actual.getDerecho()==null) {
 			actual.setDerecho(nuevo);
 		}else {
 			add(actual.getDerecho(), nuevo);
 		}
 	}
-	
+
 	public Programador buscar(Programador actual, long id) {
 		if(actual==null) {
 			return null;
@@ -35,5 +38,15 @@ public class Participantes {
 			return buscar(actual.getDerecho(), id);
 		}
 	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+	
+	
 	
 }
